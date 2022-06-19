@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>
+        <canvas id="myChart"></canvas>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var labels = [];
+        {% for i in date %}
+        labels.push("{{i.0}}");
+        {% endfor %}
+
+        var tdata = []
+        {% for j in total %}
+        tdata.push("{{j.0}}");
+        {% endfor %}
+        const data = {
+            labels: labels,
+            datasets: [{
+                label: 'My Total Amount',
+                borderColor: 'rgb(69, 48, 201)',
+                backgroundColor: function (context) {
+                    const index = context.dataIndex;
+                    const value = context.dataset.data[index];
+                    return value < context.dataset.data[index - 1] ? 'red' : 
+                        'green';
+                },
+                data: tdata,
+                pointRadius: 4,
+                pointHoverRadius: 8
+            }]
+        };
+
+        const config = {
+            type: 'line',
+            data: data,
+            options: {}
+        };
+    </script>
+    <script>
+        const myChart = new Chart(
+            document.getElementById('myChart'),
+            config
+        );
+    </script>
+</body>
+
+</html>
